@@ -7,6 +7,7 @@ Currently published:
 - `showcase-clay.webp`
 - `showcase-final.webp`
 - `object-authoring-poster.webp`
+- `road-authoring-poster.webp`
 Showcase carousel:
 
 - `showcase-1-clay.webp` + `showcase-1-final.webp`
