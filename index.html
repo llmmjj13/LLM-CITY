@@ -1,360 +1,133 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="LLM-CITYX：大模型驱动的 Blender 城市生成系统。">
-  <title>LLM-CITYX · Intelligent City Generation</title>
+  <meta name="description" content="Generate and edit 3D cities in Blender with natural language.">
+  <title>LLM-CITY · Generating and Editing 3D Cities</title>
   <link rel="stylesheet" href="./style.css">
   <script src="./app.js" defer></script>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <div class="page-grid" aria-hidden="true"></div>
 
   <header class="site-header">
-    <a class="brand" href="#home" aria-label="LLM-CITYX 首页">
-      <span class="brand-mark">LX</span>
-      <span>LLM-CITYX</span>
+    <a class="brand" href="#home" aria-label="LLM-CITY home">
+      <span class="brand-mark">LC</span>
+      <span>LLM-CITY</span>
     </a>
-    <nav class="site-nav" aria-label="页面导航">
-      <a href="#capabilities">核心能力</a>
-      <a href="#workflow">工作流程</a>
-      <a href="#showcase">效果对比</a>
-      <a href="#style-demo">风格演示</a>
-    </nav>
-    <span class="version">PROJECT · 2026</span>
+    <nav class="site-nav" aria-label="Main navigation"><a href="#generation">City generation</a><a href="#cities">City styles</a><a href="#street-tour">Street tour</a><a href="#editing">Scene editing</a></nav>
+
   </header>
 
-  <main>
+  <main id="main">
     <section class="hero section" id="home">
       <div class="hero-copy reveal">
-        <p class="eyebrow">LLM × MCP × PROCEDURAL CITY</p>
-        <h1>从自然语言与地图数据<br><span>到可渲染的三维城市</span></h1>
-        <p class="hero-summary">
-          LLM-CITYX 是运行在 Blender 4.0+ 内的城市生成插件，将自然语言指令、
-          OpenStreetMap 与语义图接入 Agent 和 MCP 工具层。
-        </p>
+        <h1>LLM-CITY</h1>
+        <p class="hero-summary">“Build an old town with a winding road through it.”<br>LLM-CITY builds the neighborhood in Blender. Pick a building along the road and ask for a different style.</p>
         <div class="hero-actions">
-          <a class="button button-primary" href="#workflow">查看生成流程</a>
-          <a class="button button-ghost" href="#showcase">浏览效果</a>
+          <a class="button button-primary" href="#generation">See how it works</a>
+          <a class="button button-ghost" href="#editing">Watch the editing demos</a>
         </div>
-        <ul class="hero-facts" aria-label="项目特性">
-          <li><strong>3</strong><span>输入形式</span></li>
-          <li><strong>2</strong><span>城市生成路径</span></li>
-          <li><strong>Blender</strong><span>原生执行环境</span></li>
-        </ul>
       </div>
 
       <div class="hero-media reveal" data-delay="120">
-        <div class="render-comparison hero-comparison" aria-label="白模与 Cycles 最终城市渲染自动对比">
+        <div class="render-comparison hero-comparison" aria-label="Comparison of the clay model and the final city render">
           <div class="comparison-layer comparison-clay">
             <img
               class="comparison-image"
               src="./images/clay-preview.webp"
-              alt="城市白模预览"
+              alt="Clay render of the city"
             >
           </div>
           <div class="comparison-layer comparison-cycles">
             <img
               class="comparison-image"
               src="./images/cycles-final.webp"
-              alt="Cycles 最终城市渲染"
+              alt="Final render of the same city"
             >
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section capabilities-section" id="capabilities">
-      <header class="section-heading reveal">
-        <p class="section-index">01 · CAPABILITIES</p>
-        <h2>核心能力</h2>
-        <p>围绕城市数据解析、程序化建模和场景交互形成完整工具链。</p>
-      </header>
 
-      <div class="capability-grid">
-        <article class="capability-card reveal">
-          <span class="capability-number">01</span>
-          <h3>双路径城市生成</h3>
-          <p>支持 OSM 与语义图两种城市生成输入。</p>
-          <div class="tag-row"><span>OSM</span><span>Semantic Map</span></div>
-          <button class="details-button" type="button" data-detail="city-generation">Technical Details</button>
-        </article>
-        <article class="capability-card reveal" data-delay="50">
-          <span class="capability-number">02</span>
-          <h3>Agent 场景执行</h3>
-          <p>结构化命令生命周期、轻量上下文，以及绘制、选择和渲染前的持久确认节点。</p>
-          <div class="tag-row"><span>LLM</span><span>MCP</span></div>
-          <button class="details-button" type="button" data-detail="agent-execution">Technical Details</button>
-        </article>
-        <article class="capability-card reveal" data-delay="100">
-          <span class="capability-number">03</span>
-          <h3>程序化城市元素</h3>
-          <p>建筑、道路、河流、隧道、高架与植被。</p>
-          <div class="tag-row"><span>Geometry Nodes</span><span>PCG</span></div>
-          <button class="details-button" type="button" data-detail="city-elements">Technical Details</button>
-        </article>
+    <section class="section generation-section" id="generation">
+      <header class="section-heading reveal"><h2>From a prompt to a neighborhood</h2><p>The requested roundabout appears in both the road plan and the finished neighborhood.</p></header>
+      <div class="generation-story reveal">
+        <div class="generation-request"><span class="story-label">Prompt</span><blockquote>A medium-sized city on a regular grid with one roundabout.</blockquote></div>
+        <figure class="layout-step"><span class="story-label">Road layout</span><img src="./images/demo/roundabout-layout.svg" alt="Road plan with the roundabout in the upper right, aligned with the city render" loading="lazy"><figcaption>Roads from the same viewpoint as the render</figcaption></figure>
+        <figure class="city-step"><span class="story-label">Generated scene</span><img src="./images/demo/roundabout-city.webp" alt="Overhead view of a modern district built on the illustrated road network" loading="lazy"><figcaption>Modern buildings along the generated streets</figcaption></figure>
       </div>
-    </section>
-
-    <section class="section workflow-section" id="workflow">
-      <header class="section-heading reveal">
-        <p class="section-index">02 · WORKFLOW</p>
-        <h2>工作流程</h2>
-        <p>三类输入经由统一 Agent 与 MCP 工具层，进入程序化生成和 Blender 输出阶段。</p>
-      </header>
-
-      <div class="pipeline reveal" data-delay="80">
-        <div class="pipeline-stage input-stage">
-          <p class="stage-label">INPUT</p>
-          <div class="input-grid">
-            <article>
-              <span class="node-id">I01</span>
-              <h3>文本</h3>
-              <p>自然语言任务与多轮确认</p>
-            </article>
-            <article>
-              <span class="node-id">I02</span>
-              <h3>OSM</h3>
-              <p>OpenStreetMap 矢量数据</p>
-            </article>
-            <article>
-              <span class="node-id">I03</span>
-              <h3>语义图</h3>
-              <p>城市空间语义信息</p>
-            </article>
-          </div>
-        </div>
-
-        <div class="flow-arrow" aria-hidden="true"><span></span></div>
-
-        <article class="pipeline-stage agent-stage">
-          <p class="stage-label">INTELLIGENCE</p>
-          <span class="node-id">L01</span>
-          <h3>LLM Agent + MCP</h3>
-          <p>上下文摘要 · 工具选择 · 可恢复分步执行</p>
-        </article>
-
-        <div class="flow-arrow" aria-hidden="true"><span></span></div>
-
-        <div class="pipeline-stage generation-stage">
-          <p class="stage-label">GENERATION</p>
-          <div class="module-row">
-            <span>建筑</span>
-            <span>道路</span>
-            <span>河流</span>
-            <span>隧道</span>
-            <span>高架</span>
-          </div>
-          <p>建筑、道路、河流、隧道和高架按需生成并进入 Blender 场景。</p>
-        </div>
-
-        <div class="flow-arrow" aria-hidden="true"><span></span></div>
-
-        <article class="pipeline-stage output-stage">
-          <p class="stage-label">OUTPUT</p>
-          <span class="node-id">O01</span>
-          <h3>Blender 场景与渲染</h3>
-          <p>相机构图 · 白模预览 · Cycles 最终输出</p>
-        </article>
-      </div>
-
-      <article class="workflow-semantic reveal" data-delay="120">
+      <details class="supplementary-input"><summary>Start with a map</summary>
+        <p>Import an existing street network from OpenStreetMap, or lay out a neighborhood with a semantic map.</p>
+        <article class="workflow-semantic" data-delay="120">
         <div class="semantic-compare" data-semantic-carousel>
-          <button class="semantic-nav semantic-prev" type="button" aria-label="上一组语义图结果">←</button>
+          <button class="semantic-nav semantic-prev" type="button" aria-label="Previous map and scene">←</button>
           <div class="semantic-media">
-            <img class="semantic-image" data-semantic-input src="./images/semantic/input-1.webp" alt="语义图输入，第 1 组">
-            <span class="semantic-label">INPUT · 语义图</span>
+            <img class="semantic-image" data-semantic-input src="./images/semantic/input-1.webp" alt="Input semantic map, example 1">
+            <span class="semantic-label">Semantic map</span>
           </div>
           <span class="compare-arrow" aria-hidden="true">→</span>
           <div class="semantic-media">
-            <img class="semantic-image" data-semantic-output src="./images/semantic/result-1.webp" alt="城市生成结果，第 1 组">
-            <span class="semantic-label">OUTPUT · 城市结果</span>
+            <img class="semantic-image" data-semantic-output src="./images/semantic/result-1.webp" alt="Generated city, example 1">
+            <span class="semantic-label">Generated scene</span>
           </div>
-          <button class="semantic-nav semantic-next" type="button" aria-label="下一组语义图结果">→</button>
+          <button class="semantic-nav semantic-next" type="button" aria-label="Next map and scene">→</button>
         </div>
         <div class="card-copy">
-          <h3>Semantic Layout</h3>
-          <p>点击切换三组语义图输入与对应城市生成结果。</p>
+
+          <p>Use the arrows to browse three maps and their corresponding scenes.</p>
         </div>
-      </article>
+      </article></details>
     </section>
-
-    <section class="section showcase-section" id="showcase">
-      <header class="section-heading reveal">
-        <p class="section-index">03 · SHOWCASE</p>
-        <h2>效果对比</h2>
-        <p>同一场景与相机下的白模构图预览和 Cycles 最终渲染。</p>
-      </header>
-
-      <div class="showcase-grid">
-        <article class="showcase-card showcase-render-carousel reveal">
-          <div class="showcase-render-pair" data-showcase-carousel>
-            <button class="showcase-nav showcase-prev" type="button" aria-label="上一组渲染对比">←</button>
-            <div class="showcase-render-media">
-              <img class="showcase-render-image" data-showcase-clay src="./images/showcase-1-clay.webp" alt="第 1 组城市白模预览">
-            </div>
-            <span class="showcase-render-arrow" aria-hidden="true">→</span>
-            <div class="showcase-render-media">
-              <img class="showcase-render-image" data-showcase-final src="./images/showcase-1-final.webp" alt="第 1 组 Cycles 最终渲染">
-            </div>
-            <button class="showcase-nav showcase-next" type="button" aria-label="下一组渲染对比">→</button>
-          </div>
-          <div class="card-copy">
-            <h3>四组场景渲染对比</h3>
-            <p>点击切换四组相同场景下的白模预览与 Cycles 最终渲染。</p>
-          </div>
-        </article>
-
-        <article class="showcase-card reveal">
-          <div class="media-placeholder ratio-wide">
-            <video
-              class="style-video scene-authoring-video"
-              autoplay
-              muted
-              loop
-              playsinline
-              preload="auto"
-              disablepictureinpicture
-              poster="./images/showcase-final.webp"
-              aria-label="用户指令驱动场景编辑流程"
-            >
-              <source src="./media/scene-authoring.mp4" type="video/mp4">
-              当前浏览器不支持视频播放。
-            </video>
-            <span class="media-icon">03</span>
-          </div>
-          <div class="card-copy">
-            <h3>Scene Authoring</h3>
-            <p>展示用户指令驱动天色、道路灯光与雾效连续变化的场景编辑过程。</p>
-          </div>
-        </article>
-
-        <article class="showcase-card reveal" data-delay="80">
-          <div class="media-placeholder ratio-wide">
-            <video
-              class="style-video object-authoring-video"
-              autoplay
-              muted
-              loop
-              playsinline
-              preload="auto"
-              disablepictureinpicture
-              poster="./images/object-authoring-poster.webp"
-              aria-label="用户指令驱动物体与河流编辑流程"
-            >
-              <source src="./media/object-authoring.mp4" type="video/mp4">
-              当前浏览器不支持视频播放。
-            </video>
-            <span class="media-icon">04</span>
-          </div>
-          <div class="card-copy">
-            <h3>Object Authoring</h3>
-            <p>展示建筑变换、邻近生成与交互式河流绘制的连续场景编辑过程。</p>
-          </div>
-        </article>
+    <section class="section city-gallery" id="cities">
+      <header class="section-heading reveal"><h2>City styles</h2><p>Four generated neighborhoods, with excerpts from their prompts.</p></header>
+      <div class="city-scenes">
+        <figure class="city-scene reveal"><img src="./images/demo/futuristic.webp" alt="Render of a futuristic district" loading="lazy"><figcaption><h3>Futuristic district</h3><p>“A futuristic district with a multiway junction and an S-curve.”</p></figcaption></figure>
+        <figure class="city-scene reveal"><img src="./images/demo/modern.webp" alt="Render of a modern downtown" loading="lazy"><figcaption><h3>Modern downtown</h3><p>“A modern downtown with a roundabout at its center.”</p></figcaption></figure>
+        <figure class="city-scene reveal"><img src="./images/demo/european.webp" alt="Render of a European old town" loading="lazy"><figcaption><h3>European old town</h3><p>“A European old town with an S-curve road running through it.”</p></figcaption></figure>
+        <figure class="city-scene reveal"><img src="./images/demo/hongkong.webp" alt="Render of a Hong Kong-style district" loading="lazy"><figcaption><h3>Hong Kong-style district</h3><p>“A Hong Kong-style district with tall, slender towers.”</p></figcaption></figure>
       </div>
     </section>
-
-    <section class="section demo-section" id="style-demo">
-      <header class="section-heading reveal">
-        <p class="section-index">04 · BUILDING STYLES</p>
-        <h2>一栋建筑，多种风格</h2>
-        <p>从任意建筑底面 Footprint 出发，快速生成并切换多种建筑风格。</p>
-      </header>
-
-      <div class="style-video-grid">
-        <article class="style-video-card reveal">
-          <div class="video-panel">
-            <video
-              class="style-video"
-              autoplay
-              muted
-              loop
-              playsinline
-              preload="auto"
-              disablepictureinpicture
-              poster="./images/cycles-final.webp"
-              aria-label="建筑风格循环演示一"
-            >
-              <source src="./media/building-styles-original.mp4" type="video/mp4">
-              当前浏览器不支持视频播放。
-            </video>
-            <div class="video-empty" aria-hidden="true">
-              <strong>视频暂不可用</strong>
-            </div>
-          </div>
-        </article>
-
-        <article class="style-video-card reveal" data-delay="80">
-          <div class="video-panel">
-            <video
-              class="style-video"
-              autoplay
-              muted
-              loop
-              playsinline
-              preload="auto"
-              disablepictureinpicture
-              poster="./images/cycles-final.webp"
-              aria-label="建筑风格循环演示二"
-            >
-              <source src="./media/building-styles.mp4" type="video/mp4">
-              当前浏览器不支持视频播放。
-            </video>
-            <div class="video-empty" aria-hidden="true">
-              <strong>视频暂不可用</strong>
-            </div>
-          </div>
-        </article>
-      </div>
-      <div class="video-caption style-video-summary reveal">
-        <h3>任意 Footprint，多种风格</h3>
-        <p>从不同建筑底面轮廓生成可编辑的程序化建筑，并快速适配多种建筑资产与外观风格。</p>
+    <section class="section street-tour-section" id="street-tour">
+      <header class="section-heading reveal"><h2>Street tour</h2><p>Follow a drive through the city to see its streets and buildings up close.</p></header>
+      <video class="street-tour-video reveal" src="./media/street-tour.mp4"
+             controls playsinline preload="metadata" aria-label="Street-level drive through the generated city">
+        <a href="./media/street-tour.mp4">Download the street tour</a>
+      </video>
+    </section>
+    <section class="section editing-section" id="editing">
+      <header class="section-heading"><h2>Editing the city with language</h2></header>
+      <div class="edit-screening">
+        <nav class="clip-list" aria-label="Choose an editing demo">
+          <a href="./media/road-authoring.mp4" aria-current="true" data-caption="Change the lane count on a selected road segment and try different sidewalk finishes.">Lanes and sidewalks</a>
+          <a href="./media/object-authoring.mp4" data-caption="Rotate a building, add another nearby, and draw the course of a river.">Buildings and rivers</a>
+          <a href="./media/scene-authoring.mp4" data-caption="Watch the street change as night falls, the lights come on, and fog rolls in.">Lighting and weather</a>
+          <a href="./media/building-styles-original.mp4" data-caption="Try different building styles on the same footprint.">Building styles</a>
+          <a href="./media/building-styles.mp4" data-caption="Start with a different footprint and see how the buildings fit its shape.">Alternative footprints</a>
+        </nav>
+        <figure class="clip-stage">
+          <video id="edit-player" src="./media/road-authoring.mp4" poster="./images/road-authoring-poster.webp"
+                 controls playsinline muted preload="metadata" aria-label="Lanes and sidewalks"></video>
+          <figcaption id="clip-caption" aria-live="polite">Change the lane count on a selected road segment and try different sidewalk finishes.</figcaption>
+        </figure>
       </div>
     </section>
-
-    <section class="section demo-section" id="road-demo">
-      <header class="section-heading reveal">
-        <p class="section-index">05 · ROAD AUTHORING</p>
-        <h2>丰富车道，多样人行道</h2>
-        <p>通过自然语言调整车道配置，从九种人行道风格中选择并预览街道效果。</p>
-      </header>
-      <div class="video-panel reveal">
-        <video class="style-video" autoplay muted loop playsinline preload="metadata"
-          disablepictureinpicture poster="./images/road-authoring-poster.webp"
-          aria-label="车道编辑与人行道风格演示">
-          <source src="./media/road-authoring.mp4" type="video/mp4">
-          当前浏览器不支持视频播放。
-        </video>
-        <div class="video-empty" aria-hidden="true"><strong>视频暂不可用</strong></div>
-      </div>
-    </section>
-
   </main>
-
-  <div class="details-dialog" data-details-dialog hidden>
-    <div class="details-backdrop" data-details-close></div>
-    <section class="details-panel" role="dialog" aria-modal="true" aria-labelledby="details-title">
-      <button class="details-close" type="button" data-details-close aria-label="关闭技术细节">×</button>
-      <p class="section-index">TECHNICAL DETAILS</p>
-      <h2 id="details-title"></h2>
-      <div id="details-content"></div>
-    </section>
-  </div>
-
   <div class="media-dialog" data-media-dialog hidden>
     <div class="media-dialog-backdrop" data-media-close></div>
-    <section class="media-dialog-panel" role="dialog" aria-modal="true" aria-label="媒体预览">
-      <button class="details-close" type="button" data-media-close aria-label="关闭媒体预览">×</button>
+    <section class="media-dialog-panel" role="dialog" aria-modal="true" aria-label="Media preview">
+      <button class="details-close" type="button" data-media-close aria-label="Close media preview">×</button>
       <div class="media-dialog-content" data-media-content></div>
     </section>
   </div>
 
   <footer class="site-footer">
     <div>
-      <strong>LLM-CITYX</strong>
-      <span>Intelligent City Generation for Blender</span>
+      <strong>LLM-CITY</strong>
+      <span>Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a> · <a href="https://opendatacommons.org/licenses/odbl/1-0/">Open Database License</a></span>
     </div>
   </footer>
 </body>
