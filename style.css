@@ -1407,6 +1407,8 @@ main > .section { padding-block: clamp(36px, 5vw, 72px); }
 .clip-list a { padding: 14px 10px; border-bottom: 1px solid var(--line); color: #52665c; }
 .clip-list a[aria-current] { color: var(--ink); font-weight: 700; background: #dcebe1; box-shadow: inset 3px 0 #487c5c; }
 .clip-stage { min-width: 0; margin: 0; }
+.street-tour-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(8px, 2vw, 24px); align-items: start; }
+.street-tour-grid > video { min-width: 0; }
 .clip-stage video, .street-tour-video { display: block; width: 100%; aspect-ratio: 16/9; object-fit: contain; background: #14231c; }
 .clip-stage figcaption { margin-top: 12px; color: var(--muted); line-height: 1.65; }
 .generation-story {
